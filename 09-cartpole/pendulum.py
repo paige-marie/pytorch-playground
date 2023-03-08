@@ -147,7 +147,7 @@ class PendulumEnv(gym.Env):
 
         self.state = np.array([newth, newthdot])
         # terminated = False
-        print("step: newth is ", newth)
+        #print("step: newth is ", newth)
         # print(np.pi / 3)
         terminated = not bool(
             newth <= np.pi / 3 and newth >= -(np.pi / 3) 
@@ -171,9 +171,9 @@ class PendulumEnv(gym.Env):
             high = np.array([x, y])
         low = -high  # We enforce symmetric limits.
         self.state = self.np_random.uniform(low=low, high=high)
-        print("reset:   state ", self.state)
-        print("reset: high is ", high)
-        print("reset: low  is ", low)
+        #print("reset:   state ", self.state)
+        #print("reset: high is ", high)
+        #print("reset: low  is ", low)
         self.last_u = None
 
         if self.render_mode == "human":
