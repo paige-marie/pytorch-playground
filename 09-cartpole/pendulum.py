@@ -14,8 +14,8 @@ from gymnasium.error import DependencyNotInstalled
 # DEFAULT_X = np.pi
 # DEFAULT_Y = 1.0
 
-DEFAULT_X = 1.0 #theta, 0 is up
-DEFAULT_Y = 2.0 # angular velocity
+DEFAULT_X = 0.0 # theta, 0 is up
+DEFAULT_Y = 0.0 
 #this is striahgt up
 
 class PendulumEnv(gym.Env):
@@ -126,7 +126,7 @@ class PendulumEnv(gym.Env):
 
     def step(self, u):
         th, thdot = self.state  # th := theta
-        print("state is : ", self.state)
+        print("step: state is : ", self.state)
         # print("th is : ", th)
         # print("thdot is : ", thdot)
         #thdot = angular velocity?
@@ -135,8 +135,9 @@ class PendulumEnv(gym.Env):
         m = self.m
         l = self.l
         dt = self.dt
-
+        print("step: u ", u)
         u = np.clip(u, -self.max_torque, self.max_torque)[0]
+        print("step: u ", u)
         self.last_u = u  # for rendering
         costs = angle_normalize(th) ** 2 + 0.1 * thdot**2 + 0.001 * (u**2)
 
@@ -146,13 +147,11 @@ class PendulumEnv(gym.Env):
 
         self.state = np.array([newth, newthdot])
         # terminated = False
-        # print("newth is : ", newth)
+        print("step: newth is ", newth)
         # print(np.pi / 3)
         terminated = not bool(
-            newth >= 0 and newth < np.pi / 3
-            or newth > (5 * np.pi) / 3 and newth < (6 * np.pi) / 3
+            newth <= np.pi / 3 and newth >= -(np.pi / 3) 
         )
-
 
         if self.render_mode == "human":
             self.render()
@@ -170,9 +169,11 @@ class PendulumEnv(gym.Env):
             x = utils.verify_number_and_cast(x)
             y = utils.verify_number_and_cast(y)
             high = np.array([x, y])
-        print("high is " ,high)
         low = -high  # We enforce symmetric limits.
-        self.state = self.np_random.uniform(low=low, high=high) #where the random starting state is assigned
+        self.state = self.np_random.uniform(low=low, high=high)
+        print("reset:   state ", self.state)
+        print("reset: high is ", high)
+        print("reset: low  is ", low)
         self.last_u = None
 
         if self.render_mode == "human":
