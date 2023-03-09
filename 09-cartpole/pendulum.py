@@ -126,7 +126,7 @@ class PendulumEnv(gym.Env):
 
     def step(self, u):
         th, thdot = self.state  # th := theta
-        print("step: state is : ", self.state)
+        #print("step: state is : ", self.state)
         # print("th is : ", th)
         # print("thdot is : ", thdot)
         #thdot = angular velocity?
@@ -135,9 +135,9 @@ class PendulumEnv(gym.Env):
         m = self.m
         l = self.l
         dt = self.dt
-        print("step: u ", u)
+        #print("step: u ", u)
         u = np.clip(u, -self.max_torque, self.max_torque)[0]
-        print("step: u ", u)
+        #print("step: u ", u)
         self.last_u = u  # for rendering
         costs = angle_normalize(th) ** 2 + 0.1 * thdot**2 + 0.001 * (u**2)
 
